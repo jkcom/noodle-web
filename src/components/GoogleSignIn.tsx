@@ -20,7 +20,7 @@ export const GoogleSignIn = () => {
             Authorization: `Bearer ${idToken}`,
           },
         });
-        window.location.reload();
+        window.location.href = "/";
       }}
     >
       {"Google"}
