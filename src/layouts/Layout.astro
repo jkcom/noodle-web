@@ -1,0 +1,32 @@
+---
+import {GoogleSignIn} from '../components/GoogleSignIn.tsx'
+import {SignOut} from '../components/SignOut.tsx'
+import { app } from "../firebase/server";
+import { getAuth } from "firebase-admin/auth";
+
+/* Check if the user is authenticated */
+const auth = getAuth(app);
+let isSignedIn = false;
+if (Astro.cookies.has("session")) {
+  const sessionCookie = Astro.cookies.get("session").value;
+  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  isSignedIn = true;
+} else {
+  console.log(":(");
+}
+---
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+    <head>
+      {!isSignedIn ? <GoogleSignIn client:load /> : <SignOut client:load /> }
+    </head>
+		<slot/>
+	</body>
+</html>
