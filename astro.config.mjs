@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-import vercel from "@astrojs/vercel/serverless";
+import vercelEdge from "@astrojs/vercel/edge";
 
 import compressor from "astro-compressor";
 
@@ -8,5 +8,5 @@ import compressor from "astro-compressor";
 export default defineConfig({
   output: "server",
   integrations: [react(), compressor()],
-  adapter: vercel()
+  adapter: vercelEdge(),
 });
