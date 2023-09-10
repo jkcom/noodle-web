@@ -1,17 +1,23 @@
 ---
-import {SignOut} from '../components/SignOut.tsx'
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+
+import {db} from '../db'
+import { UsersTable } from "../schema";
 
 /* Check if the user is authenticated */
 const auth = getAuth(app);
 let decodedCookie;
+
+const allUsers = await db.select().from(UsersTable);
+console.log(allUsers)
+
 if (Astro.cookies.has("session")) {
-  const sessionCookie = Astro.cookies.get("session").value;
-  decodedCookie = await auth.verifySessionCookie(sessionCookie);
-} else {
-  console.log(":(");
-}
+  const sessionCookie = Astro.cookies.get("session")?.value;
+  if (sessionCookie) {
+    decodedCookie = await auth.verifySessionCookie(sessionCookie);
+  }
+} 
 ---
 <html lang="en">
 	<head>

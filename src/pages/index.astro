@@ -1,6 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
+
+import {db} from '../db'
+import { UsersTable } from "../schema";
+
+const allUsers = await db.select().from(UsersTable);
+
 ---
 <Layout>
   <h1>{'Hello Noodle'}</h1>
+  <h2>{`Number of users: ${allUsers.length}`}</h2>
 </Layout>
