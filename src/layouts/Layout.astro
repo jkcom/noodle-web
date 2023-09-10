@@ -1,23 +1,6 @@
 ---
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
-
-import {db} from '../db'
-import { UsersTable } from "../schema";
-
-/* Check if the user is authenticated */
-const auth = getAuth(app);
-let decodedCookie;
-
-const allUsers = await db.select().from(UsersTable);
-console.log(allUsers)
-
-if (Astro.cookies.has("session")) {
-  const sessionCookie = Astro.cookies.get("session")?.value;
-  if (sessionCookie) {
-    decodedCookie = await auth.verifySessionCookie(sessionCookie);
-  }
-} 
+import { getUser } from "../queries/get-user";
+const user = await getUser(Astro)
 ---
 <html lang="en">
 	<head>
@@ -29,9 +12,9 @@ if (Astro.cookies.has("session")) {
 	</head>
 	<body>
     <head>
-      {decodedCookie && decodedCookie.name}
-      {decodedCookie && <img src={decodedCookie.picture} />}
-      {!decodedCookie ? <a href="/sign-in" >{'Sign in'}</a> : <a href="/sign-out" >{'Sign out'}</a> }
+      {user && user.name}
+      {user && <img src={user.image} />}
+      {!user ? <a href="/sign-in" >{'Sign in'}</a> : <a href="/sign-out" >{'Sign out'}</a> }
     </head>
 		<slot/>
 	</body>
