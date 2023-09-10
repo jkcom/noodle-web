@@ -1,29 +1,9 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import {
-  pgTable,
-  serial,
-  text,
-  timestamp,
-  uniqueIndex,
-} from "drizzle-orm/pg-core";
+import { Account } from "./tables/Account";
+import { AccountUser } from "./tables/AccountUser";
+import { User } from "./tables/User";
 
-export const User = pgTable(
-  "users",
-  {
-    id: serial("id").primaryKey(),
-    name: text("name").notNull(),
-    email: text("email").notNull(),
-    firebaseId: text("firebaseId").notNull(),
-    image: text("image").notNull(),
-    createdAt: timestamp("createdAt").defaultNow().notNull(),
-  },
-  (users) => {
-    return {
-      uniqueIdx: uniqueIndex("unique_idx").on(users.email),
-      firebaseIdx: uniqueIndex("firebaseIdx").on(users.firebaseId),
-    };
-  }
-);
-
-export type SelectUser = InferSelectModel<typeof User>;
-export type InsertUser = InferInsertModel<typeof User>;
+export const schema = {
+  User,
+  Account,
+  AccountUser,
+};

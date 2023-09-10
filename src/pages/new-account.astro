@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 
 import {db} from '../db/db'
-import { User } from "../db/tables/User";
+import { User } from "../db/schema";
 
 const allUsers = await db.select().from(User);
 
@@ -10,4 +10,4 @@ const allUsers = await db.select().from(User);
 <Layout>
   <h1>{'Hello Noodle'}</h1>
   <h2>{`Number of users: ${allUsers.length}`}</h2>
-</Layout>../db/tables/User
+</Layout>
