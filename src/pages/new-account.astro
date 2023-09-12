@@ -1,14 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import {db} from '../db/db'
-import { User } from "../db/tables/User";
-import {Button} from '@/components/ui/button'
-
-const allUsers = await db.select().from(User);
-
 ---
 <Layout>
-  <h1 >{'Hello Noodle'}</h1>
-  <h2>{`Number of users: ${allUsers.length}`}</h2>
+  <h1 >{'Create new account'}</h1>
 </Layout>
