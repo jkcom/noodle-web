@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { getApps, initializeApp } from "firebase/app";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCXP9eQbl0ZBYrn1OYrflKGIQ8Y88xVpik",
@@ -10,4 +10,8 @@ const firebaseConfig = {
   measurementId: "G-DEV0S1E9Z2",
 };
 
-export const app = initializeApp(firebaseConfig);
+const alreadyCreatedAps = getApps();
+console.log("no apps");
+
+export const app =
+  alreadyCreatedAps.length === 0 && initializeApp(firebaseConfig);
