@@ -24,9 +24,6 @@ export const getUser = async (Astro: AstroGlobal): Promise<InsertUser | null | u
   if (user) {
     
     const ac = await db.query.AccountUser.findMany({
-      with: {
-        user: true,
-      },
       where: eq(AccountUser.userId, user.id)
     })
 
