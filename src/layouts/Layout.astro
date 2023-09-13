@@ -1,9 +1,8 @@
 ---
-import { Button } from "@/components/ui/button";
 import { getUser } from "../queries/get-user";
-const user = await getUser(Astro)
-
 import '../styles/global.css'
+
+const user = await getUser(Astro)
 
 ---
 <html lang="en">
@@ -14,13 +13,13 @@ import '../styles/global.css'
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body >
+	<body class="bg-slate-500">
     <head>
       {user && user.name}
       {user && <img src={user.image} />}
       {!user ? <a href="/sign-in" >{'Sign in'}</a> : <a href="/sign-out" >{'Sign out'}</a> }
     </head>
-    <Button>{'Hello'}</Button>
+
 		<slot/>
 	</body>
 </html>

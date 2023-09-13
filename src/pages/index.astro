@@ -2,7 +2,16 @@
 import Layout from "../layouts/Layout.astro";
 
 import {db} from '../db/db'
-import { User } from "../db/tables/User";
+import { User } from "@/db/schema";
+import { getUser } from "@/queries/get-user";
+
+
+const user = await getUser(Astro)
+
+if (user && user.accountUsers?.length === 0 ) {
+  return Astro.redirect('/new-account')
+}
+
 
 const allUsers = await db.select().from(User);
 
