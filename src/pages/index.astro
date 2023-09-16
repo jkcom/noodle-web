@@ -4,6 +4,9 @@ import Layout from "../layouts/Layout.astro";
 import {db} from '../db/db'
 import { User } from "@/db/schema";
 import { getUser } from "@/queries/get-user";
+import { Island } from "@/components/Island";
+import { Button } from "@/components/ui/button";
+import { CreateAccountForm } from "@/components/CreateAccountForm";
 
 
 const user = await getUser(Astro)
