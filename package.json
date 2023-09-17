@@ -3,11 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "concurrently --kill-others \"npm run watch-types\" \"npm run start\"",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "watch-types": "watch 'npm run export-types' ./src/server",
+    "export-types": "npx tsc --declaration --strict  --pretty src/server/server.ts --outFile ../../noodle-expo/server/server.js --emitDeclarationOnly"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.2",
@@ -36,9 +38,12 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "^1.0.7",
+    "watch": "^0.13.0",
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.19.13"
+    "concurrently": "^8.2.1",
+    "drizzle-kit": "^0.19.13",
+    "typescript": "^5.2.2"
   }
 }
