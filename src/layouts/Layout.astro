@@ -2,7 +2,7 @@
 import { getUser } from "../queries/get-user";
 import '../styles/global.css'
 
-const user = await getUser(Astro)
+const user = await getUser(Astro.cookies.get('session')?.value)
 
 ---
 <html lang="en">

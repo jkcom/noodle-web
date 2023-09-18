@@ -10,7 +10,11 @@ export const appRouter = t.router({
   helloWorld: publicProcedure
     .input(z.object({ message: z.string(), noAttempts: z.number() }))
     .query((opts) => {
-      return "World " + opts.input.message;
+      return (
+        "World " +
+        opts.input.message +
+        ` (${opts.ctx.user?.name || "User not logged in"})`
+      );
     }),
 });
 

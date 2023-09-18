@@ -1,11 +1,11 @@
 import { User, type DeepUser } from "@/db/schema";
-import type { AstroGlobal } from "astro";
 import { eq } from "drizzle-orm";
 import { db } from "../db/db";
 import { getSessionUser } from "../firebase/get-session-user";
 
-export const getUser = async (Astro: AstroGlobal): Promise<DeepUser | null | undefined> => {
-  const sessionUser = await getSessionUser(Astro);
+export const getUser = async (sessionCookie: string | undefined): Promise<DeepUser | null | undefined> => {
+
+  const sessionUser = sessionCookie ? await getSessionUser(sessionCookie) : null;
 
   if (!sessionUser) {
     return null;
