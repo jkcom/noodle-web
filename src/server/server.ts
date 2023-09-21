@@ -1,17 +1,36 @@
-import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import type { Context } from "./context";
-export const t = initTRPC.context<Context>().create();
+import { validateAccountName } from "./auth/check-account-name";
+import { createNewAccount } from "./auth/create-new-account";
+import { isAutorized } from "./middleware";
+import { trpc } from "./trpc";
 
-export const middleware = t.middleware;
-export const publicProcedure = t.procedure;
+export const publicProcedure = trpc.procedure;
+export const authorizedProcedure = publicProcedure.use(isAutorized);
+export const appRouter = trpc.router({
+  /**
+   * Auth
+   */
 
-export const appRouter = t.router({
+  // validate new account name
+  checkAccountName: authorizedProcedure
+    .input(z.object({ accountName: z.string() }))
+    .query((opts) => validateAccountName(opts.input.accountName)),
+
+  // create new account
+  createNewAccount: authorizedProcedure
+    .input(z.object({ accountName: z.string() }))
+    .mutation((opts) =>
+      createNewAccount(opts.input.accountName, opts.ctx.user)
+    ),
+
+  /**
+   * Testing
+   */
   helloWorld: publicProcedure
     .input(z.object({ message: z.string(), noAttempts: z.number() }))
-    .query(({ ctx }) => {
+    .query((opts) => {
       return {
-        user: ctx.user,
+        user: opts.ctx.user,
         someVal: 123,
         trueFalse: false,
         value:

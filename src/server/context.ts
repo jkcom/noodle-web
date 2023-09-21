@@ -8,10 +8,8 @@ export async function createContext({
 }: FetchCreateContextFnOptions) {
   let user;
   try {
-    console.log();
-
     if (req.headers.get("cookie")) {
-      const cookies = parseCookie(req.headers.get("cookie")) as {
+      const cookies = parseCookie(req.headers.get("cookie") || "") as {
         session: string | undefined;
       };
       user = cookies.session ? await getUserFromSession(cookies.session) : null;

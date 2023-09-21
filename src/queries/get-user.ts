@@ -1,3 +1,4 @@
+import { User, type DeepUser } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import type { DecodedIdToken } from "firebase-admin/auth";
 import { db } from "../db/db";

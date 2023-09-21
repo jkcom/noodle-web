@@ -11,12 +11,14 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "baseUrl": ".",
+    "types": ["vite/client"],
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
   },
   "files": [
-      "./src/server/server.ts"
-  ]
+    "./src/server/server.ts"
+  ],
+  "exclude": ["./src/firebase/server.ts"]
 }
 
