@@ -1,6 +1,6 @@
+import { getUserFromIdToken, getUserFromSession } from "@/queries/get-user";
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { getUser } from "../queries/get-user";
 
 export async function createContext({
   req,
@@ -8,11 +8,23 @@ export async function createContext({
 }: FetchCreateContextFnOptions) {
   let user;
   try {
-    const cookies = parseCookie(req.headers.get("cookie") || "") as {
-      session: string | undefined;
-    };
-    user = cookies.session ? await getUser(cookies.session) : null;
+    console.log();
+
+    if (req.headers.get("cookie")) {
+      const cookies = parseCookie(req.headers.get("cookie")) as {
+        session: string | undefined;
+      };
+      user = cookies.session ? await getUserFromSession(cookies.session) : null;
+    }
+
+    if (!user) {
+      const authHeader = req.headers.get("Authorization");
+      if (authHeader) {
+        user = await getUserFromIdToken(authHeader);
+      }
+    }
   } catch (error) {
+    console.log(error);
   } finally {
     return { req, resHeaders, user };
   }

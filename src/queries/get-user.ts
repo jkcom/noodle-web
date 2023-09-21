@@ -1,19 +1,41 @@
 import { eq } from "drizzle-orm";
+import type { DecodedIdToken } from "firebase-admin/auth";
 import { db } from "../db/db";
-import { User, type DeepUser } from "../db/schema";
-import { getSessionUser } from "../firebase/get-session-user";
+import { getIdTokenUser, getSessionUser } from "../firebase/get-session-user";
 
-export const getUser = async (
+export const getUserFromIdToken = async (
+  idToken: string | undefined
+): Promise<DeepUser | null | undefined> => {
+  if (!idToken) {
+    return null;
+  }
+
+  const decodedIdToken = await getIdTokenUser(idToken);
+
+  if (!decodedIdToken) {
+    return null;
+  } else {
+    return await getUserFromFirebaseId(decodedIdToken);
+  }
+};
+
+export const getUserFromSession = async (
   sessionCookie: string | undefined
 ): Promise<DeepUser | null | undefined> => {
-  console.log("sess", sessionCookie);
   const sessionUser = sessionCookie
     ? await getSessionUser(sessionCookie)
     : null;
 
   if (!sessionUser) {
     return null;
+  } else {
+    return await getUserFromFirebaseId(sessionUser);
   }
+};
+
+const getUserFromFirebaseId = async (
+  firebaseUser: DecodedIdToken
+): Promise<DeepUser | undefined> => {
   const user = await db.query.User.findFirst({
     with: {
       accountUsers: {
@@ -22,7 +44,7 @@ export const getUser = async (
         },
       },
     },
-    where: eq(User.firebaseId, sessionUser.uid),
+    where: eq(User.firebaseId, firebaseUser.uid),
   });
 
   // check account
@@ -30,13 +52,13 @@ export const getUser = async (
     return user;
   }
 
-  if (!user && sessionUser) {
+  if (!user && firebaseUser) {
     try {
       await db.insert(User).values({
-        email: sessionUser.email || "",
-        firebaseId: sessionUser.uid,
-        image: sessionUser.picture,
-        name: sessionUser.name || "",
+        email: firebaseUser.email || "",
+        firebaseId: firebaseUser.uid,
+        image: firebaseUser.picture,
+        name: firebaseUser.name || "",
       });
 
       const newUser = await db.query.User.findFirst({
@@ -47,7 +69,7 @@ export const getUser = async (
             },
           },
         },
-        where: eq(User.firebaseId, sessionUser.uid),
+        where: eq(User.firebaseId, firebaseUser.uid),
       });
 
       if (newUser) {
@@ -55,7 +77,6 @@ export const getUser = async (
       }
     } catch (error) {
       console.error(error);
-      return null;
     }
   }
 };
