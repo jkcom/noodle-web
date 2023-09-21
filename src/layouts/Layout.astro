@@ -2,6 +2,8 @@
 import { getUserFromSession } from "../queries/get-user";
 import '../styles/global.css';
 
+const accountId = Astro.cookies.get('account')?.value;
+
 const user = await getUserFromSession(Astro.cookies.get('session')?.value)
 
 ---
@@ -15,6 +17,7 @@ const user = await getUserFromSession(Astro.cookies.get('session')?.value)
 	</head>
 	<body class="bg-slate-500">
     <head>
+      {'Account ID' + accountId}
       {user && user.name}
       {user && <img src={user.image} />}
       {!user ? <a href="/sign-in" >{'Sign in'}</a> : <a href="/sign-out" >{'Sign out'}</a> }

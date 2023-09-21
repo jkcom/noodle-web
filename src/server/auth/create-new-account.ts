@@ -19,4 +19,6 @@ export const createNewAccount = async (accountName: string, user: DeepUser) => {
       role: "owner",
     })
     .returning();
+
+  return {accountId: account.id};
 };

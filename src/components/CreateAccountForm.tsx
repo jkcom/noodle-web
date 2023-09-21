@@ -16,14 +16,24 @@ export const CreateAccountForm = () => {
     }
   );
 
-  const createNewAccountMutation = trpcReact.createNewAccount.useMutation();
+  const createNewAccountMutation = trpcReact.createNewAccount.useMutation({
+    onSuccess: async (data, variables, context) => {
+      await fetch("/api/set-account", {
+        method: "POST",
+        body: JSON.stringify({
+          account: data.accountId.toString(),
+        }),
+      });
+      location.href = "/";
+    },
+  });
 
   return (
     <form
       className="w-full max-w-sm"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        createNewAccountMutation.mutate({
+        const data = await createNewAccountMutation.mutate({
           accountName,
         });
       }}

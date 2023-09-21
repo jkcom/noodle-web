@@ -12,7 +12,6 @@ if (user && user.accountUsers?.length === 0 ) {
   return Astro.redirect('/new-account')
 }
 
-
 const allUsers = await db.select().from(User);
 
 ---
