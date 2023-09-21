@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { middleware } from "../trpc";
+import { middleware } from "../middleware";
 
 export const isAutorized = middleware(async ({ ctx, next }) => {
   if (!ctx.user) {

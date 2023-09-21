@@ -2,6 +2,8 @@
 import { getUserFromSession } from "../queries/get-user";
 import '../styles/global.css';
 
+const accountId = Astro.cookies.get('account')?.value;
+
 const user = await getUserFromSession(Astro.cookies.get('session')?.value)
 
 ---
