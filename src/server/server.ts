@@ -9,12 +9,16 @@ export const publicProcedure = t.procedure;
 export const appRouter = t.router({
   helloWorld: publicProcedure
     .input(z.object({ message: z.string(), noAttempts: z.number() }))
-    .query((opts) => {
-      return (
-        "World " +
-        opts.input.message +
-        ` (${opts.ctx.user?.name || "User not logged in"})`
-      );
+    .query(({ ctx }) => {
+      return {
+        user: ctx.user,
+        someVal: 123,
+        trueFalse: false,
+        value:
+          "World " +
+          opts.input.message +
+          ` (${opts.ctx.user?.name || "User not logged in"})`,
+      };
     }),
 });
 

@@ -1,15 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import {db} from '../db/db'
 import { User } from "@/db/schema";
 import { getUser } from "@/queries/get-user";
-import { Island } from "@/components/Island";
-import { Button } from "@/components/ui/button";
-import { CreateAccountForm } from "@/components/CreateAccountForm";
+import { db } from '../db/db';
 
 
-const user = await getUser(Astro)
+const user = await getUser(Astro.cookies.get('session')?.value)
 
 if (user && user.accountUsers?.length === 0 ) {
   return Astro.redirect('/new-account')

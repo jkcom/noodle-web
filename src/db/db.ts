@@ -4,7 +4,7 @@ import { createPool } from "@vercel/postgres";
 import * as schema from "./schema";
 
 const pool = createPool({
-  connectionString: import.meta.env.POSTGRES_URL,
+  connectionString: process.env.POSTGRES_URL,
 });
 
 // Connect to Vercel Postgres

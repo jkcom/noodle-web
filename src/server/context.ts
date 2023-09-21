@@ -1,6 +1,6 @@
-import { getUser } from "@/queries/get-user";
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+import { getUser } from "../queries/get-user";
 
 export async function createContext({
   req,
@@ -24,7 +24,7 @@ const parseCookie = (str: string) =>
   str
     .split(";")
     .map((v) => v.split("="))
-    .reduce((acc, v) => {
+    .reduce((acc: any, v) => {
       acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
       return acc;
     }, {});

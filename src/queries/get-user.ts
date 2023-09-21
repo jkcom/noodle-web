@@ -1,11 +1,15 @@
-import { User, type DeepUser } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "../db/db";
+import { User, type DeepUser } from "../db/schema";
 import { getSessionUser } from "../firebase/get-session-user";
 
-export const getUser = async (sessionCookie: string | undefined): Promise<DeepUser | null | undefined> => {
-
-  const sessionUser = sessionCookie ? await getSessionUser(sessionCookie) : null;
+export const getUser = async (
+  sessionCookie: string | undefined
+): Promise<DeepUser | null | undefined> => {
+  console.log("sess", sessionCookie);
+  const sessionUser = sessionCookie
+    ? await getSessionUser(sessionCookie)
+    : null;
 
   if (!sessionUser) {
     return null;

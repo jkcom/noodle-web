@@ -1,0 +1,22 @@
+
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "verbatimModuleSyntax": false,
+    "isolatedModules": false,
+    "outFile": "../noodle-expo/server/server.js",
+    "declaration": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "files": [
+      "./src/server/server.ts"
+  ]
+}
+

@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "watch-types": "watch 'npm run export-types' ./src/server",
-    "export-types": "npx tsc --declaration --strict  --pretty src/server/server.ts --outFile ../../noodle-expo/server/server.js --emitDeclarationOnly"
+    "export-types": "npx tsc -p tsconfig.export.json"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.2",
