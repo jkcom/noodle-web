@@ -1,7 +1,7 @@
 /* @ts-ignore */
 
 import type { ServiceAccount } from "firebase-admin";
-import { cert, initializeApp } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 
 const serviceAccount = {
   type: "service_account",
@@ -16,6 +16,8 @@ const serviceAccount = {
   client_x509_cert_url: import.meta.env.FIREBASE_CLIENT_CERT_URL,
 };
 
-export const app = initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
-});
+export const app =
+  getApps()[0] ||
+  initializeApp({
+    credential: cert(serviceAccount as ServiceAccount),
+  });

@@ -1,4 +1,8 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import {
+  relations,
+  type InferInsertModel,
+  type InferSelectModel,
+} from "drizzle-orm";
 import {
   integer,
   pgEnum,
@@ -9,7 +13,6 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core";
-
 
 /**
  *  User
@@ -38,14 +41,12 @@ export const UserRelations = relations(User, ({ many }) => ({
 }));
 
 export type SelectUser = InferSelectModel<typeof User>;
-export type DeepUser = SelectUser & {accountUsers?: DeepAccountUser[]}
+export type DeepUser = SelectUser & { accountUsers?: DeepAccountUser[] };
 export type InsertUser = InferInsertModel<typeof User>;
-
 
 /**
  * Account
-*/
-
+ */
 
 export const Account = pgTable(
   "accounts",
@@ -59,15 +60,17 @@ export const Account = pgTable(
       uniqueIdx: uniqueIndex("unique_idx").on(accounts.name),
     };
   }
-  );
-  
-  export const AccountRelations = relations(Account, ({ many }) => ({
-    accountUsers: many(AccountUser),
-  }));
-  
-  export type SelectAccount = InferSelectModel<typeof Account>;
-  export type DeepAccount = InferSelectModel<typeof Account> & {accountUsers?: DeepAccount[]};
-  export type InsertAccount = InferInsertModel<typeof Account>;
+);
+
+export const AccountRelations = relations(Account, ({ many }) => ({
+  accountUsers: many(AccountUser),
+}));
+
+export type SelectAccount = InferSelectModel<typeof Account>;
+export type DeepAccount = InferSelectModel<typeof Account> & {
+  accountUsers?: DeepAccount[];
+};
+export type InsertAccount = InferInsertModel<typeof Account>;
 
 /**
  * Account role
@@ -97,16 +100,14 @@ export const UserAccountRelations = relations(AccountUser, ({ one }) => ({
     references: [User.id],
   }),
   account: one(Account, {
-    fields: [AccountUser.userId],
+    fields: [AccountUser.accountId],
     references: [Account.id],
   }),
 }));
 
-
 export type SelectAccountUser = InferSelectModel<typeof AccountUser>;
 export type DeepAccountUser = InferSelectModel<typeof AccountUser> & {
-  user?: DeepUser,
-  account?: DeepAccount
+  user?: DeepUser;
+  account?: DeepAccount;
 };
 export type InsertAccountUser = InferInsertModel<typeof AccountUser>;
-

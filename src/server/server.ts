@@ -1,3 +1,6 @@
+import { db } from "@/db/db";
+import { AccountUser } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { validateAccountName } from "./auth/check-account-name";
 import { createNewAccount } from "./auth/create-new-account";
@@ -22,6 +25,17 @@ export const appRouter = trpc.router({
     .mutation((opts) =>
       createNewAccount(opts.input.accountName, opts.ctx.user)
     ),
+
+  // get user accounts
+  usersAccounts: authorizedProcedure.query(async (opts) => {
+    const accountUsers = await db.query.AccountUser.findMany({
+      where: eq(AccountUser.userId, opts.ctx.user.id),
+      with: {
+        account: true,
+      },
+    });
+    return accountUsers.map((au) => au.account);
+  }),
 
   /**
    * Testing

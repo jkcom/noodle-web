@@ -3,9 +3,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { CreateAccountForm } from "./CreateAccountForm";
+import { AccountSelector } from "./profile/AccountSelector";
 
 interface IslandProps {
-  componentKey: "create-account-form";
+  componentKey: "create-account-form" | "account-selector";
 }
 
 export function Island(props: IslandProps) {
@@ -34,6 +35,8 @@ export function Island(props: IslandProps) {
           switch (props.componentKey) {
             case "create-account-form":
               return <CreateAccountForm />;
+            case "account-selector":
+              return <AccountSelector />;
           }
         })()}
       </QueryClientProvider>

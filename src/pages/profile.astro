@@ -1,0 +1,10 @@
+---
+import { Island } from "@/components/Island";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout>
+
+  <h1>{'Profile'}</h1>
+  <Island client:load componentKey="account-selector" />
+</Layout>

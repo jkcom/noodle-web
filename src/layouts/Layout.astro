@@ -13,13 +13,20 @@ const user = await getUserFromSession(Astro.cookies.get('session')?.value)
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body class="bg-slate-500">
-    <head>
-      {user && user.name}
-      {user && <img src={user.image} />}
-      {!user ? <a href="/sign-in" >{'Sign in'}</a> : <a href="/sign-out" >{'Sign out'}</a> }
-    </head>
-
+	<body>
+    <header>
+			<div class="flex justify-between p-3 bg-background-900">
+				<div class="text-xl">
+					<a href="/">
+						{'Noodle'}
+					</a>
+				</div>
+				<div>
+					{user && <a href="/profile"><img src={user.image} class="rounded-full w-8 h-8"  /></a>}
+					{!user && <a href="/sign-in" >{'Sign in'}</a> }
+				</div>
+			</div>
+    </header>
 		<slot/>
 	</body>
 </html>
