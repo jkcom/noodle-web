@@ -34,7 +34,7 @@ export const getUserFromSession = async (
   }
 };
 
-const getUserFromFirebaseId = async (
+export const getUserFromFirebaseId = async (
   firebaseUser: DecodedIdToken
 ): Promise<DeepUser | undefined> => {
   const user = await db.query.User.findFirst({

@@ -1,4 +1,5 @@
 import { trpcReact } from "@/client";
+import { setAccount } from "@/utils/set-account";
 import {
   Select,
   SelectContent,
@@ -11,13 +12,20 @@ export const AccountSelector = () => {
   const accountsQuery = trpcReact.usersAccounts.useQuery();
 
   return (
-    <Select>
+    <Select
+      onValueChange={async (value) => {
+        await setAccount(value);
+        location.href = "/profile";
+      }}
+    >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>
         {accountsQuery.data?.map((a) => (
-          <SelectItem value="pineapple">{a.name}</SelectItem>
+          <SelectItem key={a.id} value={a.id.toString()}>
+            {a.name}
+          </SelectItem>
         ))}
       </SelectContent>
     </Select>

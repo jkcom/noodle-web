@@ -1,22 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-import { User } from "@/db/schema";
-import { getUserFromSession } from "@/queries/get-user";
-import { db } from '../db/db';
-
-
-const user = await getUserFromSession(Astro.cookies.get('session')?.value)
-
-if (user && user.accountUsers?.length === 0 ) {
-  return Astro.redirect('/new-account')
-}
-
-const allUsers = await db.select().from(User);
 
 ---
 <Layout>
   <h1>{'Hello Noodle'}</h1>
-  <h1>{`${user?.accountUsers[0].account?.name}`}</h1>
-  <h2>{`Number of users: ${allUsers.length}`}</h2>
+
 </Layout>
