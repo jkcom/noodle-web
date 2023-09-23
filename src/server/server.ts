@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { validateAccountName } from "./auth/check-account-name";
 import { createNewAccount } from "./auth/create-new-account";
-import { isAutorized } from "./middleware";
+import { isAutorized } from "./middleware/is-authorized";
 import { trpc } from "./trpc";
 
 export const publicProcedure = trpc.procedure;

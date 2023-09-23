@@ -7,6 +7,7 @@ auth.setPersistence(inMemoryPersistence);
 export const SignOut = () => {
   useEffect(() => {
     (async () => {
+      await auth.signOut();
       await fetch("/api/auth/signout");
       window.location.href = "/";
     })();

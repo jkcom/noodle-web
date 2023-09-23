@@ -1,16 +1,9 @@
 ---
-import { getLocals } from "@/server/middleware";
+import { getContextFromCookies } from "@/server/get-context";
 import "../styles/global.css";
 
-const {
-  context: { user, account, accountUser },
-} = getLocals(Astro);
-
-const serializedContext = JSON.stringify({
-  user,
-  account,
-  accountUser,
-});
+const accountContext = await getContextFromCookies(Astro.cookies);
+const { account, user } = accountContext;
 ---
 
 <html lang="en">
@@ -21,14 +14,6 @@ const serializedContext = JSON.stringify({
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Noodle</title>
-    <!-- Include Context -->
-    {
-      user && (
-        <script
-          define:vars={{ serializedContext }}
-        >{`window.__ASTRO_CONTEXT__ = ${serializedContext}`}</script>
-      )
-    }
   </head>
   <body>
     <header>
@@ -40,7 +25,7 @@ const serializedContext = JSON.stringify({
         </div>
         <div>
           {
-            user && (
+            user && account && (
               <a class="flex flex-row align-middle" href="/profile">
                 <>
                   <img src={user.image} class="rounded-full w-8 h-8" />

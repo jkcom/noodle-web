@@ -9,11 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Layout from "@/layouts/Layout.astro";
-import { getLocals } from "@/server/middleware";
+import { getContextFromCookies } from "@/server/get-context";
 
-const { context } = getLocals(Astro);
+const accountContext = await getContextFromCookies(Astro.cookies);
 
-if (!context.user) {
+if (!accountContext.user) {
   return Astro.redirect("/sign-in");
 }
 ---
@@ -28,7 +28,7 @@ if (!context.user) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <AccountSelector context={context} client:load />
+        <AccountSelector context={accountContext} client:load />
       </CardContent>
     </Card>
     <Card className="mt-5">
@@ -39,7 +39,7 @@ if (!context.user) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <CreateAccountForm context={context} client:load />
+        <CreateAccountForm context={accountContext} client:load />
       </CardContent>
     </Card>
   </div>
