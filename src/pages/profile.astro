@@ -1,10 +1,46 @@
 ---
-import { Island } from "@/components/Island";
+import { CreateAccountForm } from "@/components/CreateAccountForm";
+import { AccountSelector } from "@/components/profile/AccountSelector";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Layout from "@/layouts/Layout.astro";
+import { getLocals } from "@/server/middleware";
+
+const { context } = getLocals(Astro);
+
+if (!context.user) {
+  return Astro.redirect("/sign-in");
+}
 ---
 
 <Layout>
-
-  <h1>{'Profile'}</h1>
-  <Island client:load componentKey="account-selector" />
+  <div class="container max-w-lg">
+    <Card className="mt-5">
+      <CardHeader>
+        <CardTitle>Select account</CardTitle>
+        <CardDescription>
+          When you are part of multiple accounts you can select them here.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <AccountSelector context={context} client:load />
+      </CardContent>
+    </Card>
+    <Card className="mt-5">
+      <CardHeader>
+        <CardTitle>Account name</CardTitle>
+        <CardDescription>
+          When you are part of multiple accounts you can select them here.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <CreateAccountForm context={context} client:load />
+      </CardContent>
+    </Card>
+  </div>
 </Layout>

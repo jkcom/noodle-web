@@ -1,21 +1,16 @@
 import { getSessionUser } from "@/firebase/get-session-user";
-import type { AstroGlobal } from "astro";
-import { getContext } from "./get-context";
+import { getAccountContext } from "./get-context";
 
-export const contextFromSession = async (Astro: AstroGlobal) => {
-  const accountCookie = Astro.cookies.get("account")?.value;
-  const accountId = accountCookie ? parseInt(accountCookie) : undefined;
-  const sessionCookie = Astro.cookies.get("session")?.value;
-
+export const contextFromSession = async (
+  session: string,
+  accountId: number
+) => {
   // firebase user
-  const firebaseUser = sessionCookie
-    ? await getSessionUser(sessionCookie)
-    : null;
-  console.log("got here", firebaseUser);
+  const firebaseUser = session ? await getSessionUser(session) : null;
 
   if (!firebaseUser) {
     return {};
   } else {
-    return await getContext(firebaseUser, accountId);
+    return await getAccountContext(firebaseUser, accountId);
   }
 };

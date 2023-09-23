@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: 190 6% 21%;
-    --background-light: 190, 6%, 25%;
-    --foreground: 214  16%  92%;
+    --background: 174, 1%, 90%;
+    --background-dark: 174, 1%, 81%;
+    --foreground: 174, 3%, 17%, 1;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -37,8 +37,8 @@
   }
 
   .dark {
-    --background: 195 4.4% 17.6%;
-    --background-light: 190 6 21;
+    --background: 190 6% 21%;
+    --background-light: 190, 6%, 25%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;
@@ -73,6 +73,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background-dark text-foreground;
   }
 }

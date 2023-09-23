@@ -1,13 +1,19 @@
 import { db } from "@/db/db";
-import { Account, AccountUser, User } from "@/db/schema";
+import { Account, AccountUser, User, type SelectAccount, type SelectAccountUser, type SelectUser } from "@/db/schema";
 
 import { eq } from "drizzle-orm";
 import type { DecodedIdToken } from "firebase-admin/auth";
 
-export const getContext = async (
+export type AccountContext = {
+  user?: SelectUser;
+  account?: SelectAccount;
+  accountUser?: SelectAccountUser;
+}
+
+export const getAccountContext = async (
   firebaseUser: DecodedIdToken,
   accountId: number
-) => {
+): Promise<AccountContext> => {
   const user = await db.query.User.findFirst({
     where: eq(User.firebaseId, firebaseUser.uid),
   });

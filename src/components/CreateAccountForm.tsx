@@ -3,8 +3,9 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { withIsland } from "./use-island";
 
-export const CreateAccountForm = () => {
+export const CreateAccountForm = withIsland(() => {
   const [accountName, setAccountName] = useState("");
 
   const { data } = trpcReact.checkAccountName.useQuery(
@@ -55,4 +56,4 @@ export const CreateAccountForm = () => {
       </div>
     </form>
   );
-};
+});
